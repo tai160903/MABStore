@@ -12,6 +12,7 @@ export default function App() {
             const Layout = route.isShowHeader ? Default : Fragment;
             return (
               <Route
+                key={route.path}
                 path={route.path}
                 element={
                   <Layout>
