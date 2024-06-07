@@ -6,7 +6,6 @@ import {
   WrapperText,
   WrapperTextSmall,
 } from "./styled";
-import Search from "antd/es/transfer/search";
 import {
   CaretDownOutlined,
   ShoppingCartOutlined,
