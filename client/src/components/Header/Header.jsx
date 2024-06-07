@@ -12,6 +12,7 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
 function Header() {
   return (
     <div>
@@ -20,15 +21,17 @@ function Header() {
           <WrapperText>MABStore</WrapperText>
         </Col>
         <Col span={12}>
-          <Search
-            placeholder="input search text"
-            allowClear
-            enterButton="Search"
+          <ButtonInputSearch
             size="large"
+            placeholder="input search text"
+            text="Tìm kiếm"
             // onSearch={onSearch}
           />
         </Col>
-        <Col span={6} style={{ display: "flex", gap: "12px" }}>
+        <Col
+          span={6}
+          style={{ display: "flex", gap: "12px", justifyContent: "center" }}
+        >
           <WrapperAccount>
             <UserOutlined style={{ fontSize: "35px" }} />
             <div>
