@@ -25,18 +25,6 @@ const homeController = {
           message: "Password and confirm password are not match!",
         });
       }
-      // } else {
-      //   const salt = await bcrypt.genSalt(10);
-      //   const hashed = await bcrypt.hash(password, salt);
-      //   const newUser = await new userModel({
-      //     username: username,
-      //     password: hashed,
-      //     email: email,
-      //   });
-      //   console.log(newUser);
-      //   const user = await newUser.save();
-      //   res.status(200).json(user);
-      // }
       const respone = await homeService.register(req.body);
       return res.status(200).json(respone);
     } catch (err) {
