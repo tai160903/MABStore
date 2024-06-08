@@ -11,7 +11,7 @@ const userSchema = new Schema(
       min: 5,
       max: 20,
     },
-    fullName: { type: String, required: true, trim: true },
+    fullName: { type: String, required: false, trim: true },
     password: { type: String, required: true, min: 8, trim: true },
     email: {
       type: String,
