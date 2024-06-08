@@ -4,6 +4,7 @@ import { WrapperTypeProduct } from "./style";
 import banner_1 from "../../asset/image/banner_1.jpg";
 import banner_2 from "../../asset/image/banner_2.jpg";
 import banner_3 from "../../asset/image/banner_3.jpg";
+import CardComponent from "../../components/CardComponent/CardComponent";
 function HomePage() {
   const arr = ["TV", "Tu lanh", "Laptop"];
 
@@ -16,6 +17,9 @@ function HomePage() {
       </WrapperTypeProduct>
       <div>
         <SliderComponent arrImg={[banner_1, banner_2, banner_3]} />
+        <div style={{ display: "flex", gap: "20px", marginTop: "15px" }}>
+          <CardComponent />
+        </div>
       </div>
     </div>
   );
