@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
-const Schema = new mongoose.Schema();
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
       required: true,
       trim: true,
-      unique: true,
+      unique: [true, "Username existed!"],
       min: 5,
       max: 20,
     },
@@ -18,17 +17,13 @@ const userSchema = new Schema(
       required: false,
       unique: true,
       trim: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please fill a valid email address",
-      ],
     },
     isAdmin: { type: Boolean, required: true, default: false },
     phone: { type: String, required: false },
     status: { type: Boolean, required: true, default: true },
     point: { type: Number, required: false, default: 0 },
-    accessToken: { type: String, required: true },
-    refreshToken: { type: String, required: true },
+    // accessToken: { type: String, required: true },
+    // refreshToken: { type: String, required: true },
   },
   {
     collection: "user",
