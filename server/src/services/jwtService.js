@@ -1,11 +1,10 @@
 const jwt = require("jsonwebtoken");
 const genneralAccessToken = (payload) => {
-  console.log("payload", payload);
   const accessToken = jwt.sign(
     {
       payload,
     },
-    "accessToken",
+    process.env.ACCESSTOKEN,
     { expiresIn: "1h" }
   );
   return accessToken;
@@ -16,7 +15,7 @@ const genneralRefreshToken = (payload) => {
     {
       payload,
     },
-    "refreshToken",
+    process.env.REFRESHTOKEN,
     { expiresIn: "365d" }
   );
   return refreshToken;
