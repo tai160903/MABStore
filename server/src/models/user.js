@@ -22,8 +22,8 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, required: false },
     status: { type: Boolean, required: true, default: true },
     point: { type: Number, required: false, default: 0 },
-    // accessToken: { type: String, required: true },
-    // refreshToken: { type: String, required: true },
+    accessToken: { type: String, required: true },
+    refreshToken: { type: String, required: true },
   },
   {
     collection: "user",
