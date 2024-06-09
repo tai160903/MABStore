@@ -1,5 +1,5 @@
 const userService = require("../services/userService");
-
+const jwtService = require("../services/jwtService");
 const userController = {
   updateUser: async (req, res) => {
     try {
@@ -65,6 +65,26 @@ const userController = {
         });
       }
       const response = await userService.detailUser(userId);
+      return res.status(200).json(response);
+    } catch (err) {
+      return res.status(500).json({
+        status: "FAILED",
+        message: "An error occurred!",
+        error: err.message,
+      });
+    }
+  },
+
+  refreshToken: async (req, res) => {
+    try {
+      const token = req.headers.token.split(" ")[1];
+      if (!token) {
+        return res.json({
+          status: "FAILED",
+          message: "The token is required",
+        });
+      }
+      const response = await jwtService.refreshToken(token);
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({

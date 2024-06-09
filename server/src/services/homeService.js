@@ -62,7 +62,6 @@ const homeService = {
           { _id: checkUser.id },
           { accessToken, refreshToken }
         );
-        console.log("accessToken", accessToken);
         return resolve({
           status: "OK",
           message: "SUCCESS",

@@ -3,8 +3,10 @@ const userController = require("../controllers/userController");
 const authMidleware = require("../middlewares/authMidleware");
 const router = express.Router();
 
-router.get("/", authMidleware, userController.getAllUser);
-router.get("/detail/:id", userController.detailUser);
+router.get("/", authMidleware.admin, userController.getAllUser);
+router.get("/detail/:id", authMidleware.user, userController.detailUser);
 router.put("/update/:id", userController.updateUser);
-router.delete("/delete/:id", authMidleware, userController.deleteUser);
+router.delete("/delete/:id", authMidleware.admin, userController.deleteUser);
+router.post("/refresh_token", userController.refreshToken);
+
 module.exports = router;

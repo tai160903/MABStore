@@ -1,4 +1,6 @@
 const userModel = require("../models/user");
+const jwt = require("jsonwebtoken");
+
 const userService = {
   updateUser: (id, data) => {
     return new Promise(async (resolve, reject) => {
