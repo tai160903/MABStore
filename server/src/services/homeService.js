@@ -58,6 +58,10 @@ const homeService = {
           id: checkUser._id,
           isAdmin: checkUser.isAdmin,
         });
+        await userModel.findByIdAndUpdate(
+          { _id: checkUser.id },
+          { accessToken, refreshToken }
+        );
         console.log("accessToken", accessToken);
         return resolve({
           status: "OK",
