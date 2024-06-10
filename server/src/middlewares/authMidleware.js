@@ -16,7 +16,7 @@ const authMidleware = {
         next();
       } else {
         return res.status(404).json({
-          message: "aaa .",
+          message: "The authentication failed.",
           status: "FAILED",
         });
       }

@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const homeRoute = require("./src/routes/homeRoute");
 const userRoute = require("./src/routes/userRoute");
+const productRoute = require("./src/routes/productRoute");
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 8085;
@@ -18,7 +19,7 @@ mongoose
 
 app.use("/", homeRoute);
 app.use("/user", userRoute);
-
+app.use("/product", productRoute);
 app.listen(port, () => {
   console.log("Server started: http://localhost:8085/");
 });
