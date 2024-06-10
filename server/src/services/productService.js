@@ -128,13 +128,51 @@ const productService = {
     });
   },
 
-  getAllProduct: (limit = 2, page = 1) => {
+  getAllProduct: (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
       try {
         const totalProduct = await productModel.count();
-        const allProduct = await productModel.find();
-        // .limit(limit)
-        // .skip(page * limit);
+        if (filter) {
+          const label = filter[0];
+          const allObjectFilter = await productModel
+            .find({
+              [label]: filter[1],
+            })
+            .limit(limit)
+            .skip(page * limit);
+          return resolve({
+            status: "OK",
+            message: "SUCCESS",
+            data: allObjectFilter,
+            total: totalProduct,
+            page: Number(page + 1),
+            totalPage: Math.ceil(totalProduct / limit),
+          });
+        }
+        if (sort) {
+          const objectSort = {};
+          objectSort[sort[1]] = sort[0];
+          const allProductSort = await productModel
+            .find()
+            .limit(limit)
+            .skip(page * limit)
+            .sort({
+              objectSort,
+            });
+          return resolve({
+            status: "OK",
+            message: "SUCCESS",
+            data: allProductSort,
+            total: totalProduct,
+            page: Number(page + 1),
+            totalPage: Math.ceil(totalProduct / limit),
+          });
+        }
+        const allProduct = await productModel
+          .find()
+          .limit(limit)
+          .skip(page * limit);
+
         console.log("allProduct", allProduct);
         return resolve({
           status: "OK",
