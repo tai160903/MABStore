@@ -128,15 +128,21 @@ const productService = {
     });
   },
 
-  getAllProduct: () => {
+  getAllProduct: (limit = 2, page = 1) => {
     return new Promise(async (resolve, reject) => {
       try {
+        const totalProduct = await productModel.count();
         const allProduct = await productModel.find();
+        // .limit(limit)
+        // .skip(page * limit);
         console.log("allProduct", allProduct);
         return resolve({
           status: "OK",
           message: "SUCCESS",
           data: allProduct,
+          total: totalProduct,
+          page: Number(page + 1),
+          totalPage: Math.ceil(totalProduct / limit),
         });
       } catch (error) {
         return reject({

@@ -102,7 +102,11 @@ const productController = {
 
   getAllProduct: async (req, res) => {
     try {
-      const response = await productService.getAllProduct();
+      const { limit, page } = req.query;
+      const response = await productService.getAllProduct(
+        Number(limit),
+        Number(page)
+      );
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
