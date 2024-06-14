@@ -1,22 +1,30 @@
 import { Image } from "antd";
 import React from "react";
-import Slider from "react-slick";
+import { WrapperSlider } from "./style";
 function SliderComponent({ arrImg }) {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
   };
   return (
-    <Slider {...settings}>
+    <WrapperSlider {...settings}>
       {arrImg.map((img) => {
-        return <Image src={img} alt="banner" preview={false} width="100%" />;
+        return (
+          <Image
+            key={img}
+            src={img}
+            alt="banner"
+            preview={false}
+            width="100%"
+          />
+        );
       })}
-    </Slider>
+    </WrapperSlider>
   );
 }
 
