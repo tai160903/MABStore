@@ -5,8 +5,12 @@ const router = express.Router();
 
 router.get("/", productController.getAllProduct);
 router.get("/detail/:id", productController.detailProduct);
-router.post("/create", productController.createProduct);
-router.put("/update/:id", productController.updateProduct);
-router.delete("/delete/:id", productController.deleteProduct);
+router.post("/create", authMidleware.admin, productController.createProduct);
+router.put("/update/:id", authMidleware.admin, productController.updateProduct);
+router.delete(
+  "/delete/:id",
+  authMidleware.admin,
+  productController.deleteProduct
+);
 
 module.exports = router;

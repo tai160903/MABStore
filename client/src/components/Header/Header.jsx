@@ -1,5 +1,5 @@
 import React from "react";
-import { Col } from "antd";
+import { Badge, Col } from "antd";
 import {
   WrapperAccount,
   WrapperHeader,
@@ -12,7 +12,15 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 function Header() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const handleNavigateLogin = () => {
+    navigate("/sign-in");
+  };
+  console.log("user", user);
   return (
     <div>
       <WrapperHeader>
@@ -29,20 +37,32 @@ function Header() {
         </Col>
         <Col
           span={6}
-          style={{ display: "flex", gap: "12px", justifyContent: "center" }}
+          style={{
+            display: "flex",
+            gap: "12px",
+            justifyContent: "space-around",
+          }}
         >
           <WrapperAccount>
             <UserOutlined style={{ fontSize: "35px" }} />
-            <div>
-              <WrapperTextSmall>Đăng nhập/Đăng ký</WrapperTextSmall>
-              <div>
-                <WrapperTextSmall>Tài khoản</WrapperTextSmall>
-                <CaretDownOutlined />
+            {user?.username ? (
+              <div style={{ cursor: "pointer" }}>{user.username}</div>
+            ) : (
+              <div onClick={handleNavigateLogin} style={{ cursor: "pointer" }}>
+                <WrapperTextSmall>Đăng nhập/Đăng ký</WrapperTextSmall>
+                <div>
+                  <WrapperTextSmall>Tài khoản</WrapperTextSmall>
+                  <CaretDownOutlined />
+                </div>
               </div>
-            </div>
+            )}
           </WrapperAccount>
           <div>
-            <ShoppingCartOutlined style={{ fontSize: "35px", color: "#fff" }} />
+            <Badge count={4} size="small">
+              <ShoppingCartOutlined
+                style={{ fontSize: "35px", color: "#fff" }}
+              />
+            </Badge>
             <WrapperTextSmall>Giỏ hàng</WrapperTextSmall>
           </div>
         </Col>

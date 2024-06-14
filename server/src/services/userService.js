@@ -9,7 +9,7 @@ const userService = {
         console.log("checkUser", checkUser);
         if (checkUser === null) {
           return resolve({
-            status: "FAILED",
+            status: "ERR",
             message: "Wrong username or password!",
           });
         }
@@ -27,7 +27,7 @@ const userService = {
         });
       } catch (error) {
         return reject({
-          status: "FAILED",
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });
@@ -42,7 +42,7 @@ const userService = {
         console.log("checkUser", checkUser);
         if (checkUser === null) {
           return resolve({
-            status: "FAILED",
+            status: "ERR",
             message: "Wrong username or password!",
           });
         }
@@ -58,7 +58,7 @@ const userService = {
         });
       } catch (error) {
         return reject({
-          status: "FAILED",
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });
@@ -77,7 +77,7 @@ const userService = {
         });
       } catch (error) {
         return reject({
-          status: "FAILED",
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });
@@ -91,7 +91,7 @@ const userService = {
         const user = await userModel.findOne({ _id: id });
         if (user === null) {
           return resolve({
-            status: "FAILED",
+            status: "ERR",
             message: "Can not find user!",
           });
         }
@@ -103,7 +103,7 @@ const userService = {
         });
       } catch (error) {
         return reject({
-          status: "FAILED",
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });

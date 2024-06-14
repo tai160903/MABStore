@@ -51,7 +51,7 @@ const productService = {
         const checkProduct = await productModel.findOne({ _id: id });
         if (checkProduct === null) {
           return resolve({
-            status: "FAILED",
+            status: "ERR",
             message: "Product is not defined!",
           });
         }
@@ -69,7 +69,7 @@ const productService = {
         });
       } catch (error) {
         return reject({
-          status: "FAILED",
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });
@@ -83,7 +83,7 @@ const productService = {
         const checkProduct = await productModel.findOne({ _id: id });
         if (checkProduct === null) {
           return resolve({
-            status: "FAILED",
+            status: "ERR",
             message: "Product is not defined!",
           });
         }
@@ -94,7 +94,7 @@ const productService = {
         });
       } catch (error) {
         return reject({
-          status: "FAILED",
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });
@@ -108,7 +108,7 @@ const productService = {
         const product = await productModel.findOne({ _id: id });
         if (product === null) {
           return resolve({
-            status: "FAILED",
+            status: "ERR",
             message: "Can not find user!",
           });
         }
@@ -120,7 +120,7 @@ const productService = {
         });
       } catch (error) {
         return reject({
-          status: "FAILED",
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });
@@ -131,60 +131,45 @@ const productService = {
   getAllProduct: (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const totalProduct = await productModel.count();
+        // Build the query object
+        let query = {};
         if (filter) {
-          const label = filter[0];
-          const allObjectFilter = await productModel
-            .find({
-              [label]: filter[1],
-            })
-            .limit(limit)
-            .skip(page * limit);
-          return resolve({
-            status: "OK",
-            message: "SUCCESS",
-            data: allObjectFilter,
-            total: totalProduct,
-            page: Number(page + 1),
-            totalPage: Math.ceil(totalProduct / limit),
-          });
+          const [key, value] = filter;
+          query[key] = value;
         }
-        if (sort) {
-          const objectSort = {};
-          objectSort[sort[1]] = sort[0];
-          const allProductSort = await productModel
-            .find()
-            .limit(limit)
-            .skip(page * limit)
-            .sort({
-              objectSort,
-            });
-          return resolve({
-            status: "OK",
-            message: "SUCCESS",
-            data: allProductSort,
-            total: totalProduct,
-            page: Number(page + 1),
-            totalPage: Math.ceil(totalProduct / limit),
-          });
-        }
-        const allProduct = await productModel
-          .find()
+
+        // Get the total count of products based on the query
+        const totalProduct = await productModel.countDocuments(query);
+
+        // Build the product query with limit and skip
+        let productQuery = productModel
+          .find(query)
           .limit(limit)
           .skip(page * limit);
 
-        console.log("allProduct", allProduct);
-        return resolve({
+        // Apply sorting if provided
+        if (sort) {
+          const [order, field] = sort;
+          const sortOrder = order === "asc" ? 1 : -1;
+          productQuery = productQuery.sort({ [field]: sortOrder });
+        }
+
+        // Execute the query
+        const products = await productQuery;
+
+        // Resolve with the response object
+        resolve({
           status: "OK",
           message: "SUCCESS",
-          data: allProduct,
+          // data: products,
           total: totalProduct,
-          page: Number(page + 1),
+          page: page + 1,
           totalPage: Math.ceil(totalProduct / limit),
         });
       } catch (error) {
-        return reject({
-          status: "FAILED",
+        console.error("Error:", error);
+        reject({
+          status: "ERR",
           message: "An error occurred!",
           error: error.message,
         });

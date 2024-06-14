@@ -7,7 +7,7 @@ const userController = {
       const data = req.body;
       if (!userId) {
         return res.json({
-          status: "FAILED",
+          status: "ERR",
           message: "The userId is required",
         });
       }
@@ -15,7 +15,7 @@ const userController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -27,7 +27,7 @@ const userController = {
       const userId = req.params.id;
       if (!userId) {
         return res.json({
-          status: "FAILED",
+          status: "ERR",
           message: "The userId is required",
         });
       }
@@ -35,7 +35,7 @@ const userController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -48,7 +48,7 @@ const userController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -60,7 +60,7 @@ const userController = {
       const userId = req.params.id;
       if (!userId) {
         return res.json({
-          status: "FAILED",
+          status: "ERR",
           message: "The userId is required",
         });
       }
@@ -68,7 +68,7 @@ const userController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -76,11 +76,12 @@ const userController = {
   },
 
   refreshToken: async (req, res) => {
+    console.log("req.cookies.refreshToken", req.cookies.refreshToken);
     try {
-      const token = req.headers.token.split(" ")[1];
+      const token = req.cookies.refreshToken;
       if (!token) {
         return res.json({
-          status: "FAILED",
+          status: "ERR",
           message: "The token is required",
         });
       }
@@ -88,7 +89,7 @@ const userController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });

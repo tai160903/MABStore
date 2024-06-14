@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken");
 const genneralAccessToken = async (payload) => {
   const accessToken = jwt.sign(
     {
-      payload,
+      ...payload,
     },
     process.env.ACCESSTOKEN,
-    { expiresIn: "1d" }
+    { expiresIn: "30s" }
   );
   return accessToken;
 };
@@ -13,7 +13,7 @@ const genneralAccessToken = async (payload) => {
 const genneralRefreshToken = async (payload) => {
   const refreshToken = jwt.sign(
     {
-      payload,
+      ...payload,
     },
     process.env.REFRESHTOKEN,
     { expiresIn: "365d" }
@@ -28,14 +28,13 @@ const refreshToken = async (token) => {
       jwt.verify(token, process.env.REFRESHTOKEN, async (err, user) => {
         if (err) {
           resolve({
-            status: "FAILED",
+            status: "ERR",
             message: "THe authemtication",
           });
         }
-        const { payload } = user;
         const accessToken = await genneralAccessToken({
-          id: payload?.id,
-          isAdmin: payload?.isAdmin,
+          id: user?.id,
+          isAdmin: user?.isAdmin,
         });
         console.log("accessToken", accessToken);
         resolve({
@@ -46,7 +45,7 @@ const refreshToken = async (token) => {
       });
     } catch (error) {
       reject({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: error.message,
       });

@@ -1,3 +1,4 @@
+const { response } = require("express");
 const productService = require("../services/productService");
 const productController = {
   createProduct: async (req, res) => {
@@ -13,17 +14,9 @@ const productController = {
         price,
         description,
       } = req.body;
-      if (
-        !name ||
-        !image ||
-        !category ||
-        !quantity ||
-        !weight ||
-        !brand ||
-        !price
-      ) {
+      if (!name || !image || !category || !weight || !brand || !price) {
         return res.status(200).json({
-          status: "FAILED",
+          status: "ERR",
           message: "The input is required",
         });
       }
@@ -31,7 +24,7 @@ const productController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -44,7 +37,7 @@ const productController = {
       const data = req.body;
       if (!productId) {
         return res.json({
-          status: "FAILED",
+          status: "ERR",
           message: "The productId is required",
         });
       }
@@ -53,7 +46,7 @@ const productController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -65,7 +58,7 @@ const productController = {
       const productId = req.params.id;
       if (!productId) {
         return res.json({
-          status: "FAILED",
+          status: "ERR",
           message: "The userId is required",
         });
       }
@@ -73,7 +66,7 @@ const productController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -85,7 +78,7 @@ const productController = {
       const productId = req.params.id;
       if (!productId) {
         return res.json({
-          status: "FAILED",
+          status: "ERR",
           message: "The userId is required",
         });
       }
@@ -93,7 +86,7 @@ const productController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });
@@ -102,16 +95,18 @@ const productController = {
 
   getAllProduct: async (req, res) => {
     try {
-      const { limit, page, sort } = req.query;
+      const { limit, page, sort, filter } = req.query;
       const response = await productService.getAllProduct(
         Number(limit) || 8,
         Number(page) || 0,
-        sort
+        sort ? sort.split(",") : null,
+        filter ? filter.split(",") : null
       );
+      console.log("response", response);
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
-        status: "FAILED",
+        status: "ERR",
         message: "An error occurred!",
         error: err.message,
       });

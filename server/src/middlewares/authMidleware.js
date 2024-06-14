@@ -11,8 +11,7 @@ const authMidleware = {
           status: "FAILED",
         });
       }
-      const { payload } = user;
-      if (payload?.isAdmin) {
+      if (user?.isAdmin) {
         next();
       } else {
         return res.status(404).json({
@@ -30,16 +29,16 @@ const authMidleware = {
       if (err) {
         return res.status(404).json({
           message: "The authentication failed.",
-          status: "FAILED",
+          status: "ERR",
         });
       }
-      const { payload } = user;
-      if (payload?.isAdmin || payload?.id === userId) {
+      console.log("user", user);
+      if (user?.isAdmin || user?.id === userId) {
         next();
       } else {
         return res.status(404).json({
-          message: "aaa .",
-          status: "FAILED",
+          message: "The authentication failed.",
+          status: "ERR",
         });
       }
     });
