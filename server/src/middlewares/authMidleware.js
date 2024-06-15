@@ -32,7 +32,6 @@ const authMidleware = {
           status: "ERR",
         });
       }
-      console.log("user", user);
       if (user?.isAdmin || user?.id === userId) {
         next();
       } else {

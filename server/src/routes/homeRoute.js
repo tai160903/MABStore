@@ -7,5 +7,6 @@ router.get("/", (req, res) => {
 
 router.post("/register", homeController.register);
 router.post("/login", homeController.login);
+router.post("/logout", homeController.logout);
 
 module.exports = router;

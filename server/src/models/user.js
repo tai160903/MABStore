@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema(
       min: 5,
       max: 20,
     },
-    fullName: { type: String, required: false, trim: true },
     password: { type: String, required: true, min: 8, trim: true },
     email: {
       type: String,
@@ -19,11 +18,11 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     isAdmin: { type: Boolean, required: true, default: false },
+    fullName: { type: String, required: false, trim: true },
     phone: { type: String, required: false },
-    status: { type: Boolean, required: true, default: true },
+    address: { type: String },
+    avatar: { type: String },
     point: { type: Number, required: false, default: 0 },
-    accessToken: { type: String, required: false },
-    refreshToken: { type: String, required: false },
   },
   {
     collection: "user",

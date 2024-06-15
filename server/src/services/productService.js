@@ -167,7 +167,6 @@ const productService = {
           totalPage: Math.ceil(totalProduct / limit),
         });
       } catch (error) {
-        console.error("Error:", error);
         reject({
           status: "ERR",
           message: "An error occurred!",

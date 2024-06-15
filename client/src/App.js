@@ -7,8 +7,6 @@ import * as userService from "./services/userService";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../src/redux/slides/userSlide";
-import axios from "axios";
-import { current } from "@reduxjs/toolkit";
 export default function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -21,7 +19,6 @@ export default function App() {
   const handleDecode = () => {
     let storageData = localStorage.getItem("accessToken");
     let decode = {};
-    console.log("storageData", storageData, isJsonString(storageData));
     if (storageData && isJsonString(storageData)) {
       storageData = JSON.parse(storageData);
       decode = jwtDecode(storageData);

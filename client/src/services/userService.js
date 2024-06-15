@@ -36,3 +36,22 @@ export const refreshToken = async (id, accessToken) => {
   );
   return res.data;
 };
+
+export const logoutUser = async () => {
+  const res = await axios.post(`${process.env.REACT_APP_API_KEY}/logout`);
+  localStorage.removeItem("accessToken");
+  return res.data;
+};
+
+export const updateUser = async (id, data, accessToken) => {
+  const res = await axiosJWT.put(
+    `${process.env.REACT_APP_API_KEY}/user/update/${id}`,
+    data,
+    {
+      headers: {
+        token: `Bearer ${accessToken}`,
+      },
+    }
+  );
+  return res.data;
+};

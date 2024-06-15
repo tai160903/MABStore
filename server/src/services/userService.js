@@ -6,7 +6,6 @@ const userService = {
     return new Promise(async (resolve, reject) => {
       try {
         const checkUser = await userModel.findOne({ _id: id });
-        console.log("checkUser", checkUser);
         if (checkUser === null) {
           return resolve({
             status: "ERR",
@@ -39,7 +38,6 @@ const userService = {
     return new Promise(async (resolve, reject) => {
       try {
         const checkUser = await userModel.findOne({ _id: id });
-        console.log("checkUser", checkUser);
         if (checkUser === null) {
           return resolve({
             status: "ERR",

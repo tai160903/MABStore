@@ -76,7 +76,6 @@ const userController = {
   },
 
   refreshToken: async (req, res) => {
-    console.log("req.cookies.refreshToken", req.cookies.refreshToken);
     try {
       const token = req.cookies.refreshToken;
       if (!token) {

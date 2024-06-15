@@ -60,6 +60,22 @@ const homeController = {
       });
     }
   },
+
+  logout: async (req, res) => {
+    try {
+      res.clearCookie(`refreshToken`);
+      return res.status(200).json({
+        status: "OK",
+        message: "Logout successfully",
+      });
+    } catch (err) {
+      return res.status(500).json({
+        status: "ERR",
+        message: "An error occurred!",
+        error: err.message,
+      });
+    }
+  },
 };
 
 module.exports = homeController;

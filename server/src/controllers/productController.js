@@ -41,7 +41,6 @@ const productController = {
           message: "The productId is required",
         });
       }
-      console.log("data", data);
       const response = await productService.updateProduct(productId, data);
       return res.status(200).json(response);
     } catch (err) {
@@ -102,7 +101,6 @@ const productController = {
         sort ? sort.split(",") : null,
         filter ? filter.split(",") : null
       );
-      console.log("response", response);
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({
