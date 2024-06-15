@@ -11,6 +11,7 @@ export const WrapperText = styled.span`
   font-size: 18px;
   color: #fff;
   font-weight: bold;
+  cursor: default;
 `;
 
 export const WrapperAccount = styled.div`
@@ -25,4 +26,10 @@ export const WrapperTextSmall = styled.span`
   font-size: 15px;
   color: #fff;
   white-space: nowrap;
+`;
+export const WrapperContentPopup = styled.p`
+  cursor: pointer;
+  &:hover {
+    color: blue;
+  }
 `;
