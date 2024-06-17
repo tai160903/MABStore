@@ -25,6 +25,7 @@ export const WrapperDiscountText = styled.span`
   color: #ff469e;
   font-size: 12px;
   font-weight: 500;
+  margin-left: 10px;
 `;
 
 export const WrapperStyleTextSell = styled.span`

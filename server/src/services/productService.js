@@ -161,7 +161,7 @@ const productService = {
         resolve({
           status: "OK",
           message: "SUCCESS",
-          // data: products,
+          data: products,
           total: totalProduct,
           page: page + 1,
           totalPage: Math.ceil(totalProduct / limit),

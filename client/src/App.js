@@ -1,14 +1,17 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import routes from "./routes";
 import Default from "./components/Default/Default";
 import { isJsonString } from "./utils";
 import * as userService from "./services/userService";
 import { jwtDecode } from "jwt-decode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../src/redux/slides/userSlide";
+import LoadingComponent from "./components/LoadingComponent/LoadingComponent";
 export default function App() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
   useEffect(() => {
     const { storageData, decode } = handleDecode();
     if (decode?.id) {
@@ -51,11 +54,12 @@ export default function App() {
         <Routes>
           {routes.map((route) => {
             const Page = route.page;
+            const ischeckAuth = !route.isPrivate || user.isAdmin;
             const Layout = route.isShowHeader ? Default : Fragment;
             return (
               <Route
                 key={route.path}
-                path={route.path}
+                path={ischeckAuth ? route.path : undefined}
                 element={
                   <Layout>
                     <Page />

@@ -9,9 +9,21 @@ import banner_1 from "../../asset/image/banner_1.jpg";
 import banner_2 from "../../asset/image/banner_2.jpg";
 import banner_3 from "../../asset/image/banner_3.jpg";
 import CardComponent from "../../components/CardComponent/CardComponent";
+import * as productService from "../../services/productService";
+import { useQuery } from "@tanstack/react-query";
 function HomePage() {
   const arr = ["TV", "Tu lanh", "Laptop"];
-
+  const fetchAllProduct = async () => {
+    const res = await productService.getAllProduct();
+    console.log("res", res);
+    return res;
+  };
+  const { data: products } = useQuery({
+    queryKey: ["products"], // Change queryKey to an array with a single string element
+    queryFn: fetchAllProduct,
+    retry: 3,
+    retryDelay: 1000,
+  });
   return (
     <>
       <WrapperTypeProduct style={{ padding: "0 120px" }}>
@@ -27,16 +39,24 @@ function HomePage() {
       >
         <SliderComponent arrImg={[banner_1, banner_2, banner_3]} />
         <WrapperProducts>
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
-          <CardComponent />
+          {products?.data?.map((product) => {
+            return (
+              <CardComponent
+                key={product._id}
+                quantity={product.quantity}
+                description={product.description}
+                image={product.image}
+                name={product.name}
+                price={product.price}
+                rating={product.rating}
+                category={product.category}
+                weight={product.weight}
+                brand={product.brand}
+                selled={product.selled}
+                discount={product.discount}
+              />
+            );
+          })}
         </WrapperProducts>
         <div
           style={{

@@ -9,7 +9,20 @@ import {
 } from "./style";
 import { StarFilled } from "@ant-design/icons";
 
-function CardComponent() {
+function CardComponent(props) {
+  const {
+    quantity,
+    description,
+    image,
+    name,
+    price,
+    rating,
+    category,
+    weight,
+    brand,
+    selled,
+    discount,
+  } = props;
   return (
     <Card
       hoverable
@@ -25,17 +38,20 @@ function CardComponent() {
         />
       }
     >
-      <StyleNameProduct>Iphone</StyleNameProduct>
+      <StyleNameProduct>{name}</StyleNameProduct>
       <WrapperReportText>
         <span>
-          <span>4.5</span>
+          <span>{rating}</span>
           <StarFilled style={{ fontSize: "12px", color: "yellow" }} />
         </span>
-        <WrapperStyleTextSell> | Da ban 1000+</WrapperStyleTextSell>
+        <WrapperStyleTextSell>
+          {" "}
+          | Da ban {selled || 1000} +
+        </WrapperStyleTextSell>
       </WrapperReportText>
       <WapperPriceText>
-        <span>1.000.000d</span>
-        <WrapperDiscountText>-5%</WrapperDiscountText>
+        <span>{price}</span>
+        <WrapperDiscountText>{discount || 5} %</WrapperDiscountText>
       </WapperPriceText>
     </Card>
   );

@@ -18,7 +18,6 @@ import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Upload } from "antd";
 import { getBase64 } from "../../utils";
 function Profile() {
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -32,6 +31,7 @@ function Profile() {
     const { _id, accessToken, ...rests } = data;
     userService.updateUser(_id, data, accessToken);
   });
+  const dispatch = useDispatch();
   const { data, isPending, isSuccess, isError } = mutation;
 
   useEffect(() => {

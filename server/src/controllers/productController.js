@@ -14,7 +14,16 @@ const productController = {
         price,
         description,
       } = req.body;
-      if (!name || !image || !category || !weight || !brand || !price) {
+      if (
+        !name ||
+        !image ||
+        !category ||
+        !weight ||
+        !brand ||
+        !price ||
+        !quantity ||
+        !rating
+      ) {
         return res.status(200).json({
           status: "ERR",
           message: "The input is required",
@@ -96,7 +105,7 @@ const productController = {
     try {
       const { limit, page, sort, filter } = req.query;
       const response = await productService.getAllProduct(
-        Number(limit) || 8,
+        Number(limit) || 10,
         Number(page) || 0,
         sort ? sort.split(",") : null,
         filter ? filter.split(",") : null
