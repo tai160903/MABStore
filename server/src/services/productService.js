@@ -46,6 +46,8 @@ const productService = {
   },
 
   updateProduct: (id, data) => {
+    console.log("data", data);
+    console.log("id", id);
     return new Promise(async (resolve, reject) => {
       try {
         const checkProduct = await productModel.findOne({ _id: id });
@@ -55,24 +57,18 @@ const productService = {
             message: "Product is not defined!",
           });
         }
-        const updateProduct = await productModel.findByIdAndUpdate(
+        const updatedProduct = await productModel.findByIdAndUpdate(
           { _id: id },
           data,
-          {
-            new: true,
-          }
+          { new: true }
         );
         return resolve({
           status: "OK",
           message: "SUCCESS",
-          data: updateProduct,
+          data: updatedProduct,
         });
       } catch (error) {
-        return reject({
-          status: "ERR",
-          message: "An error occurred!",
-          error: error.message,
-        });
+        reject(error);
       }
     });
   },
@@ -90,14 +86,10 @@ const productService = {
         await productModel.findByIdAndDelete({ _id: id });
         return resolve({
           status: "OK",
-          message: "SUCCESS",
+          message: "DELETE SUCCESS",
         });
       } catch (error) {
-        return reject({
-          status: "ERR",
-          message: "An error occurred!",
-          error: error.message,
-        });
+        return reject(error);
       }
     });
   },

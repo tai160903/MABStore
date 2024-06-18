@@ -96,7 +96,7 @@ function Profile() {
   return (
     <div style={{ padding: "0 120px", margin: "0 auto" }}>
       <WrapperHeader>Thông tin người dùng</WrapperHeader>
-      <LoadingComponent isLoading={isPending}>
+      <LoadingComponent isPending={isPending}>
         <WrapperContentProfile>
           <WrapperInput>
             <WrapperLable htmlFor="username">Avatar</WrapperLable>

@@ -26,17 +26,15 @@ function AdminPage() {
   };
 
   const handleOnClick = ({ key }) => {
-    console.log("click", { key });
     setKeySelected(key);
   };
-  console.log("keySelected", keySelected);
   return (
     <>
       <Header isHiddenSearch isHiddenCart />
       <div style={{ display: "flex" }}>
         <Menu
           mode="inline"
-          style={{ width: 256, boxShadow: "1px 1px 2px #ccc", height: "100vh" }}
+          style={{ width: 256, boxShadow: "1px 1px 2px #ccc", height: "105vh" }}
           items={items}
           onClick={handleOnClick}
         />

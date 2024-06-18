@@ -110,7 +110,7 @@ function SigninPage() {
         {data?.status === "ERR" && (
           <span style={{ color: "red" }}>{data?.message}</span>
         )}
-        <LoadingComponent isLoading={isPending}>
+        <LoadingComponent isPending={isPending}>
           <ButtonComponent
             disabled={!username.length || !password.length}
             onClick={handleSignup}

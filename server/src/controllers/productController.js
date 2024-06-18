@@ -45,7 +45,7 @@ const productController = {
       const productId = req.params.id;
       const data = req.body;
       if (!productId) {
-        return res.json({
+        return res.status(200).json({
           status: "ERR",
           message: "The productId is required",
         });
@@ -76,7 +76,7 @@ const productController = {
       return res.status(500).json({
         status: "ERR",
         message: "An error occurred!",
-        error: err.message,
+        error: err,
       });
     }
   },

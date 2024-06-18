@@ -15,7 +15,6 @@ function HomePage() {
   const arr = ["TV", "Tu lanh", "Laptop"];
   const fetchAllProduct = async () => {
     const res = await productService.getAllProduct();
-    console.log("res", res);
     return res;
   };
   const { data: products } = useQuery({
