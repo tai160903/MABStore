@@ -104,19 +104,16 @@ const productController = {
   getAllProduct: async (req, res) => {
     try {
       const { limit, page, sort, filter } = req.query;
+      console.log("req.query", req.query);
       const response = await productService.getAllProduct(
         Number(limit) || 10,
         Number(page) || 0,
-        sort ? sort.split(",") : null,
-        filter ? filter.split(",") : null
+        sort,
+        filter
       );
       return res.status(200).json(response);
     } catch (err) {
-      return res.status(500).json({
-        status: "ERR",
-        message: "An error occurred!",
-        error: err.message,
-      });
+      return res.status(500).json({ message: err });
     }
   },
 };

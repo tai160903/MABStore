@@ -46,8 +46,6 @@ const productService = {
   },
 
   updateProduct: (id, data) => {
-    console.log("data", data);
-    console.log("id", id);
     return new Promise(async (resolve, reject) => {
       try {
         const checkProduct = await productModel.findOne({ _id: id });
@@ -123,47 +121,54 @@ const productService = {
   getAllProduct: (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
       try {
-        // Build the query object
-        let query = {};
+        const totalProduct = await productModel.countDocuments();
         if (filter) {
-          const [key, value] = filter;
-          query[key] = value;
+          const label = filter[1];
+          console.log("label", label);
+          const allProductFilter = await productModel
+            .find({ [label]: { $regex: filter[0] } })
+            .limit(limit)
+            .skip(page * limit);
+          resolve({
+            status: "OK",
+            message: "SUCCESS",
+            data: allProductFilter,
+            total: totalProduct,
+            pageCurrent: Number(page + 1),
+            totalPage: Math.ceil(totalProduct / limit),
+          });
         }
-
-        // Get the total count of products based on the query
-        const totalProduct = await productModel.countDocuments(query);
-
-        // Build the product query with limit and skip
-        let productQuery = productModel
-          .find(query)
+        if (sort) {
+          const objectSort = {};
+          objectSort[sort[1]] = sort[0];
+          const allProductSort = await productModel
+            .find()
+            .limit(limit)
+            .skip(page * limit)
+            .sort(objectSort);
+          resolve({
+            status: "OK",
+            message: "SUCCESS",
+            data: allProductSort,
+            total: totalProduct,
+            pageCurrent: Number(page + 1),
+            totalPage: Math.ceil(totalProduct / limit),
+          });
+        }
+        const allProduct = await productModel
+          .find()
           .limit(limit)
           .skip(page * limit);
-
-        // Apply sorting if provided
-        if (sort) {
-          const [order, field] = sort;
-          const sortOrder = order === "asc" ? 1 : -1;
-          productQuery = productQuery.sort({ [field]: sortOrder });
-        }
-
-        // Execute the query
-        const products = await productQuery;
-
-        // Resolve with the response object
         resolve({
           status: "OK",
           message: "SUCCESS",
-          data: products,
+          data: allProduct,
           total: totalProduct,
-          page: page + 1,
+          pageCurrent: Number(page + 1),
           totalPage: Math.ceil(totalProduct / limit),
         });
       } catch (error) {
-        reject({
-          status: "ERR",
-          message: "An error occurred!",
-          error: error.message,
-        });
+        reject(error);
       }
     });
   },

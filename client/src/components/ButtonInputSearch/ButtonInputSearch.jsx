@@ -10,6 +10,7 @@ function ButtonInputSearch(props) {
         size={size}
         placeholder={placeholder}
         style={{ borderRadius: "unset" }}
+        {...props}
       />
       <ButtonComponent
         size={size}

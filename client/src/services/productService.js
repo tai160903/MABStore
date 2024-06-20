@@ -1,10 +1,15 @@
 import axios from "axios";
 import * as userService from "./userService";
-export const getAllProduct = async (data) => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_API_KEY}/product/`,
-    data
-  );
+export const getAllProduct = async (search) => {
+  let res = {};
+  console.log("tim", search);
+  if (search.length > 0) {
+    res = await axios.get(
+      `${process.env.REACT_APP_API_KEY}/product/all?filter=${search}&filter=name`
+    );
+  } else {
+    res = await axios.get(`${process.env.REACT_APP_API_KEY}/product/all`);
+  }
   return res.data;
 };
 export const createProduct = async (data) => {
@@ -45,7 +50,7 @@ export const updateProduct = async (id, data) => {
 
 export const deleteProduct = async (id) => {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-  const res = await axios.delete(
+  const res = await userService.axiosJWT.delete(
     `${process.env.REACT_APP_API_KEY}/product/delete/${id}`,
 
     {

@@ -55,11 +55,7 @@ const userService = {
           message: "SUCCESS",
         });
       } catch (error) {
-        return reject({
-          status: "ERR",
-          message: "An error occurred!",
-          error: error.message,
-        });
+        return reject(error);
       }
     });
   },

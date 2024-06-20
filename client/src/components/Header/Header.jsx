@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as userService from "../../services/userService";
 import { resetUser } from "../../redux/slides/userSlide";
+import { searchProduct } from "../../redux/slides/productSlide";
 
 function Header({ isHiddenSearch = false, isHiddenCart = false }) {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
-
+  const [search, setSearch] = useState("");
   const handleNavigateLogin = () => {
     navigate("/sign-in");
   };
@@ -41,9 +42,6 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
 
   const content = (
     <div>
-      <WrapperContentPopup onClick={handleLogout}>
-        Đăng Xuất
-      </WrapperContentPopup>
       <WrapperContentPopup
         onClick={() => {
           navigate("/profile-user");
@@ -60,8 +58,17 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
           Quản lý hệ thống
         </WrapperContentPopup>
       )}
+      <WrapperContentPopup onClick={handleLogout}>
+        Đăng Xuất
+      </WrapperContentPopup>
     </div>
   );
+
+  const onSearch = (e) => {
+    setSearch(e.target.value);
+    dispatch(searchProduct(e.target.value));
+  };
+
   return (
     <div>
       <WrapperHeader
@@ -85,7 +92,7 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
               size="large"
               placeholder="input search text"
               text="Tìm kiếm"
-              // onSearch={onSearch}
+              onChange={onSearch}
             />
           </Col>
         )}
