@@ -10,33 +10,16 @@ import {
 import { StarFilled } from "@ant-design/icons";
 
 function CardComponent(props) {
-  const {
-    quantity,
-    description,
-    image,
-    name,
-    price,
-    rating,
-    category,
-    weight,
-    brand,
-    selled,
-    discount,
-  } = props;
+  const { image, name, price, rating, selled, discount } = props;
   return (
     <Card
       hoverable
       styles={{
         body: { padding: "10px" },
-        header: { width: "200px", height: "200px" },
+        header: { width: "200px", height: "300px" },
       }}
       style={{ width: 240 }}
-      cover={
-        <img
-          alt="example"
-          src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-        />
-      }
+      cover={<img alt="example" src={image} />}
     >
       <StyleNameProduct>{name}</StyleNameProduct>
       <WrapperReportText>
@@ -50,8 +33,8 @@ function CardComponent(props) {
         </WrapperStyleTextSell>
       </WrapperReportText>
       <WapperPriceText>
-        <span>{price}</span>
-        <WrapperDiscountText>{discount || 5} %</WrapperDiscountText>
+        <span>{price.toLocaleString()}</span>
+        <WrapperDiscountText>- {discount || 5} %</WrapperDiscountText>
       </WapperPriceText>
     </Card>
   );

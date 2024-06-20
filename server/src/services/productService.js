@@ -124,7 +124,6 @@ const productService = {
         const totalProduct = await productModel.countDocuments();
         if (filter) {
           const label = filter[1];
-          console.log("label", label);
           const allProductFilter = await productModel
             .find({ [label]: { $regex: filter[0] } })
             .limit(limit)

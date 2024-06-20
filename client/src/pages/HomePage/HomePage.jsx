@@ -12,49 +12,38 @@ import CardComponent from "../../components/CardComponent/CardComponent";
 import * as productService from "../../services/productService";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 import { useDebounce } from "../../hooks/useDebounce";
 
 function HomePage() {
-  const [stateProduct, setStateProduct] = useState([]);
   const [pending, setPending] = useState(false);
+  const [limit, setLimit] = useState(10);
+  // const [page, setLimit] = useState(10);
   const searchProduct = useSelector((state) => state.product?.search);
-  const refSearch = useRef(false);
   const arr = ["TV", "Tu lanh", "Laptop"];
 
   const searchDebounce = useDebounce(searchProduct, 1000);
 
-  const fetchAllProduct = async (search) => {
-    const res = await productService.getAllProduct(search);
-    if (search.length > 0 || refSearch.current) {
-      setStateProduct(res?.data);
-    } else {
-      return res;
-    }
+  const fetchAllProduct = async (context) => {
+    const limit = context?.queryKey && context?.queryKey[1];
+    const search = context?.queryKey && context?.queryKey[2];
+    const res = await productService.getAllProduct(search, limit);
+
+    return res;
   };
 
-  useEffect(() => {
-    if (refSearch.current) {
-      setPending(true);
-      fetchAllProduct(searchDebounce);
-    }
-    refSearch.current = true;
-    setPending(false);
-  }, [searchDebounce]);
-
-  const { isPending, data: products } = useQuery({
-    queryKey: ["products"], // Change queryKey to an array with a single string element
+  const {
+    isPending,
+    data: products,
+    isPlaceholderData,
+  } = useQuery({
+    queryKey: ["products", limit, searchDebounce], // Change queryKey to an array with a single string element
     queryFn: fetchAllProduct,
     retry: 3,
     retryDelay: 1000,
+    placeholderData: (previousData, previousQuery) => previousData,
   });
-
-  useEffect(() => {
-    if (products?.data?.length > 0) {
-      setStateProduct(products?.data);
-    }
-  }, [products]);
 
   return (
     <LoadingComponent isPending={isPending || pending}>
@@ -71,7 +60,7 @@ function HomePage() {
       >
         <SliderComponent arrImg={[banner_1, banner_2, banner_3]} />
         <WrapperProducts>
-          {stateProduct?.map((product) => {
+          {products?.data?.map((product) => {
             return (
               <CardComponent
                 key={product._id}
@@ -99,15 +88,30 @@ function HomePage() {
           }}
         >
           <WrapperButtonMore
-            text="Xem them"
+            disabled={
+              products?.total === products?.data?.length ||
+              products?.totalPage === 1
+            }
+            text={
+              products?.total === products?.data?.length ||
+              products?.totalPage === 1
+                ? "Đã tới cuối trang"
+                : "Xem thêm"
+            }
             type="outline"
             style={{
               border: "3px solid #ff469e",
-              color: "#ff469e",
+              color: `${
+                products?.total === products?.data?.length ? "#ccc" : "#ff469e"
+              }`,
               width: "240px",
               height: "38px",
             }}
-            styleText={{ fontWeight: 500 }}
+            styleText={{
+              fontWeight: 500,
+              color: products?.total === products?.data?.length && "#fff",
+            }}
+            onClick={() => setLimit((prev) => prev + 5)}
           />
         </div>
       </div>

@@ -1,14 +1,15 @@
 import axios from "axios";
 import * as userService from "./userService";
-export const getAllProduct = async (search) => {
+export const getAllProduct = async (search, limit) => {
   let res = {};
-  console.log("tim", search);
-  if (search.length > 0) {
+  if (search?.length > 0) {
     res = await axios.get(
-      `${process.env.REACT_APP_API_KEY}/product/all?filter=${search}&filter=name`
+      `${process.env.REACT_APP_API_KEY}/product/all?limit=${limit}&filter=${search}&filter=name`
     );
   } else {
-    res = await axios.get(`${process.env.REACT_APP_API_KEY}/product/all`);
+    res = await axios.get(
+      `${process.env.REACT_APP_API_KEY}/product/all?limit=${limit}`
+    );
   }
   return res.data;
 };

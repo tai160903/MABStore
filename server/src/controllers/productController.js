@@ -104,7 +104,6 @@ const productController = {
   getAllProduct: async (req, res) => {
     try {
       const { limit, page, sort, filter } = req.query;
-      console.log("req.query", req.query);
       const response = await productService.getAllProduct(
         Number(limit) || 10,
         Number(page) || 0,
