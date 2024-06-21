@@ -20,9 +20,8 @@ function HomePage() {
   const [pending, setPending] = useState(false);
   const [limit, setLimit] = useState(10);
   const searchProduct = useSelector((state) => state.product?.search);
+  const searchDebounce = useDebounce(searchProduct, 500);
   const arr = ["TV", "Tủ lạnh", "Laptop", "Sữa bột cao cấp"];
-
-  const searchDebounce = useDebounce(searchProduct, 1000);
 
   const fetchAllProduct = async (context) => {
     const limit = context?.queryKey && context?.queryKey[1];

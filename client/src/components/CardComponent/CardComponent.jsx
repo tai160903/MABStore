@@ -24,7 +24,7 @@ function CardComponent(props) {
         header: { width: "200px", height: "300px" },
       }}
       style={{ width: 240 }}
-      cover={<img alt="example" src={image} />}
+      cover={<img style={{ height: "300px" }} alt="example" src={image} />}
       onClick={() => handleDetailsProduct(id)}
     >
       <StyleNameProduct>{name}</StyleNameProduct>
