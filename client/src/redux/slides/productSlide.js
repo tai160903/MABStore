@@ -4,7 +4,7 @@ const initialState = {
   search: "",
 };
 
-export const productSlice = createSlice({
+export const productSlide = createSlice({
   name: "product",
   initialState,
   reducers: {
@@ -15,6 +15,6 @@ export const productSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { searchProduct } = productSlice.actions;
+export const { searchProduct } = productSlide.actions;
 
-export default productSlice.reducer;
+export default productSlide.reducer;

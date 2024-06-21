@@ -57,12 +57,11 @@ export const WrapperInfo = styled.div`
   background: #fff;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  width: 100%;
 `;
 
 export const WrapperTotal = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   padding: 17px 20px;
   background: #fff;

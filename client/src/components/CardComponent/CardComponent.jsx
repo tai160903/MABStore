@@ -33,10 +33,7 @@ function CardComponent(props) {
           <span>{rating}</span>
           <StarFilled style={{ fontSize: "12px", color: "yellow" }} />
         </span>
-        <WrapperStyleTextSell>
-          {" "}
-          | Da ban {selled || 1000} +
-        </WrapperStyleTextSell>
+        <WrapperStyleTextSell>| Da ban {selled || 1000} +</WrapperStyleTextSell>
       </WrapperReportText>
       <WapperPriceText>
         <span>{price?.toLocaleString()}</span>

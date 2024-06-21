@@ -15,11 +15,17 @@ import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import * as productService from "../../services/productService";
 import { useQuery } from "@tanstack/react-query";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addOrderProduct } from "../../redux/slides/orderSlide";
 
 function ProductDetailComponent({ idProduct }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [numProduct, setNumProduct] = useState(1);
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const fetchGetDetailsProduct = async (context) => {
     const id = context?.queryKey && context?.queryKey[1];
     if (id) {
@@ -27,12 +33,6 @@ function ProductDetailComponent({ idProduct }) {
       return res.data;
     }
   };
-
-  const { isPending, data: productDetails } = useQuery({
-    queryKey: ["product-details", idProduct],
-    queryFn: fetchGetDetailsProduct,
-    enabled: !!idProduct,
-  });
 
   const onChange = (value) => {
     setNumProduct(Number(value));
@@ -45,6 +45,32 @@ function ProductDetailComponent({ idProduct }) {
       setNumProduct(numProduct - 1);
     }
   };
+
+  const { isPending, data: productDetails } = useQuery({
+    queryKey: ["product-details", idProduct],
+    queryFn: fetchGetDetailsProduct,
+    enabled: !!idProduct,
+  });
+
+  const handleAddOrderProduct = () => {
+    if (!user?._id) {
+      navigate("/sign-in", { state: location?.pathname });
+    } else {
+      dispatch(
+        addOrderProduct({
+          orderItem: {
+            name: productDetails?.name,
+            amount: numProduct,
+            image: productDetails?.image,
+            price: productDetails?.price,
+            product: productDetails?._id,
+          },
+        })
+      );
+    }
+  };
+
+  console.log("productDetails", productDetails, user);
 
   return (
     <LoadingComponent isPending={isPending}>
@@ -168,8 +194,9 @@ function ProductDetailComponent({ idProduct }) {
             <ButtonComponent
               size={40}
               style={{ background: "#ff469e", width: "220px", height: "48px" }}
-              text="Chon mua"
+              text="Chọn mua"
               styleText={{ color: "#fff", fontSize: "15px", fontWeight: 700 }}
+              onClick={handleAddOrderProduct}
             />
             <ButtonComponent
               size={40}
@@ -178,7 +205,7 @@ function ProductDetailComponent({ idProduct }) {
                 height: "48px",
                 border: "1px solid rgb(13,92,182)",
               }}
-              text="Mua tra sau"
+              text="Mua trả sau"
               styleText={{ color: "rgb(13,92,182)", fontSize: "15px" }}
             />
           </div>

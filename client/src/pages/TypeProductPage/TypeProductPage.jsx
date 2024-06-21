@@ -25,9 +25,8 @@ function TypeProductPage() {
   const fetchProductType = async (category, page, limit) => {
     setPending(true);
     const res = await productService.getProductType(category, page, limit);
-    if (res?.status == "OK") {
+    if (res?.status === "OK") {
       setProducts(res?.data);
-      console.log("res", res);
       setPanigate({ ...panigate, total: res?.total });
       setPending(false);
     } else {

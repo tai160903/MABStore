@@ -3,7 +3,7 @@ import InputForm from "../../components/InputForm/InputForm";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import { WrapperTextLight } from "./style";
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as userService from "../../services/userService";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
@@ -16,13 +16,18 @@ function SigninPage() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const mutation = useMutationHooks((data) => userService.loginUser(data));
   const { data, isPending, isSuccess, isError } = mutation;
 
   useEffect(() => {
     if (isSuccess && data?.status !== "ERR") {
-      navigate("/");
+      if (location?.state) {
+        navigate(location?.state);
+      } else {
+        navigate("/");
+      }
       localStorage.setItem("accessToken", JSON.stringify(data?.accessToken));
       if (data?.accessToken) {
         const decode = jwtDecode(data?.accessToken);
