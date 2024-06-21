@@ -19,7 +19,6 @@ import { useDebounce } from "../../hooks/useDebounce";
 function HomePage() {
   const [pending, setPending] = useState(false);
   const [limit, setLimit] = useState(10);
-  // const [page, setLimit] = useState(10);
   const searchProduct = useSelector((state) => state.product?.search);
   const arr = ["TV", "Tu lanh", "Laptop"];
 
@@ -75,6 +74,7 @@ function HomePage() {
                 brand={product.brand}
                 selled={product.selled}
                 discount={product.discount}
+                id={product._id}
               />
             );
           })}
