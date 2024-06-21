@@ -39,7 +39,7 @@ function CardComponent(props) {
         </WrapperStyleTextSell>
       </WrapperReportText>
       <WapperPriceText>
-        <span>{price.toLocaleString()}</span>
+        <span>{price?.toLocaleString()}</span>
         <WrapperDiscountText>- {discount || 5} %</WrapperDiscountText>
       </WapperPriceText>
     </Card>

@@ -139,7 +139,10 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
             )}
           </WrapperAccount>
           {!isHiddenCart && (
-            <div>
+            <div
+              onClick={() => navigate("/order")}
+              style={{ cursor: "pointer" }}
+            >
               <Badge count={4} size="small">
                 <ShoppingCartOutlined
                   style={{ fontSize: "35px", color: "#fff" }}

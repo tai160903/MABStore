@@ -20,7 +20,7 @@ function HomePage() {
   const [pending, setPending] = useState(false);
   const [limit, setLimit] = useState(10);
   const searchProduct = useSelector((state) => state.product?.search);
-  const arr = ["TV", "Tu lanh", "Laptop"];
+  const arr = ["TV", "Tủ lạnh", "Laptop", "Sữa bột cao cấp"];
 
   const searchDebounce = useDebounce(searchProduct, 1000);
 

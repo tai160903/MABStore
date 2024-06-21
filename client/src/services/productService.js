@@ -13,6 +13,16 @@ export const getAllProduct = async (search, limit) => {
   }
   return res.data;
 };
+
+export const getProductType = async (category) => {
+  if (category) {
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_KEY}/product/all?filter=${category}&filter=category`
+    );
+    return res.data;
+  }
+};
+
 export const createProduct = async (data) => {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
   const res = await axios.post(

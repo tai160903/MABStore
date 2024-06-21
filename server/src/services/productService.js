@@ -41,7 +41,9 @@ const productService = {
             data: createProduct,
           });
         }
-      } catch (error) {}
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
