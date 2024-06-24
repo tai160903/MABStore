@@ -14,10 +14,11 @@ import { useMutationHooks } from "../../hooks/useMutationHook";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 import * as message from "../../components/MessageComponent/MessageCpmponent";
 import { updateUser } from "../../redux/slides/userSlide";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Upload } from "antd";
 import { getBase64 } from "../../utils";
 function Profile() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -29,11 +30,10 @@ function Profile() {
 
   const mutation = useMutationHooks((data) => {
     const { _id, accessToken, ...rests } = data;
-    userService.updateUser(_id, ...rests, accessToken);
+    userService.updateUser(_id, data, accessToken);
   });
-  const dispatch = useDispatch();
   const { data, isPending, isSuccess, isError } = mutation;
-
+  console.log("mutation", mutation);
   useEffect(() => {
     setUsername(user?.username);
     setEmail(user?.email);
@@ -47,13 +47,13 @@ function Profile() {
   useEffect(() => {
     if (isSuccess && data?.status !== "ERR") {
       message.success();
-      handleGetDetailUser(user?._id, user?.accessToken);
+      handlegetDetailUser(user?._id, user?.accessToken);
     } else if (isError) {
       message.error();
     }
-  }, [isSuccess, isError, data, user]);
+  }, [isError, isSuccess, data]);
 
-  const handleGetDetailUser = async (id, accessToken) => {
+  const handlegetDetailUser = async (id, accessToken) => {
     const res = await userService.getDetailUser(id, accessToken);
     dispatch(updateUser({ ...res?.data, accessToken: accessToken }));
   };
@@ -115,58 +115,147 @@ function Profile() {
                 alt="avatar"
               />
             )}
+            {/* <ButtonComponent
+              onClick={handleUpdate}
+              size={40}
+              style={{
+                width: "40px%",
+                height: "30px",
+                border: "1px solid #ff469e",
+              }}
+              text="Cập nhật"
+              styleText={{
+                color: "#ff469e",
+                fontSize: "15px",
+                fontWeight: 700,
+              }}
+            /> */}
           </WrapperInput>
           <WrapperInput>
             <WrapperLable htmlFor="username">Username</WrapperLable>
             <InputForm
               id="username"
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
               value={username}
               onChange={handleOnChangeUsername}
-              disabled
             />
+            {/* <ButtonComponent
+              onClick={handleUpdate}
+              size={40}
+              style={{
+                width: "40px%",
+                height: "30px",
+                border: "1px solid #ff469e",
+              }}
+              text="Cập nhật"
+              styleText={{
+                color: "#ff469e",
+                fontSize: "15px",
+                fontWeight: 700,
+              }}
+            /> */}
           </WrapperInput>
           <WrapperInput>
             <WrapperLable htmlFor="email">Email</WrapperLable>
             <InputForm
               id="email"
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
               value={email}
               onChange={handleOnChangeEmail}
             />
+            {/* <ButtonComponent
+              onClick={handleUpdate}
+              size={40}
+              style={{
+                width: "40px%",
+                height: "30px",
+                border: "1px solid #ff469e",
+              }}
+              text="Cập nhật"
+              styleText={{
+                color: "#ff469e",
+                fontSize: "15px",
+                fontWeight: 700,
+              }}
+            /> */}
           </WrapperInput>
           <WrapperInput>
             <WrapperLable htmlFor="fullName">Full Name</WrapperLable>
             <InputForm
               id="fullName"
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
               value={fullName}
               onChange={handleOnChangeFullName}
             />
+            {/* <ButtonComponent
+              onClick={handleUpdate}
+              size={40}
+              style={{
+                width: "40px%",
+                height: "30px",
+                border: "1px solid #ff469e",
+              }}
+              text="Cập nhật"
+              styleText={{
+                color: "#ff469e",
+                fontSize: "15px",
+                fontWeight: 700,
+              }}
+            /> */}
           </WrapperInput>
           <WrapperInput>
             <WrapperLable htmlFor="phone">Phone</WrapperLable>
             <InputForm
               id="phone"
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
               value={phone}
               onChange={handleOnChangePhone}
             />
+            {/* <ButtonComponent
+              onClick={handleUpdate}
+              size={40}
+              style={{
+                width: "40px%",
+                height: "30px",
+                border: "1px solid #ff469e",
+              }}
+              text="Cập nhật"
+              styleText={{
+                color: "#ff469e",
+                fontSize: "15px",
+                fontWeight: 700,
+              }}
+            /> */}
           </WrapperInput>
           <WrapperInput>
             <WrapperLable htmlFor="address">Address</WrapperLable>
             <InputForm
               id="address"
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
               value={address}
               onChange={handleOnChangeAddress}
             />
+            {/* <ButtonComponent
+              onClick={handleUpdate}
+              size={40}
+              style={{
+                width: "40px%",
+                height: "30px",
+                border: "1px solid #ff469e",
+              }}
+              text="Cập nhật"
+              styleText={{
+                color: "#ff469e",
+                fontSize: "15px",
+                fontWeight: 700,
+              }}
+            /> */}
           </WrapperInput>
           <WrapperInput>
             <WrapperLable htmlFor="point">Point</WrapperLable>
             <InputForm
               id="point"
-              style={{ width: "300px" }}
+              style={{ width: "100%" }}
               value={point}
               disabled
             />
@@ -178,6 +267,7 @@ function Profile() {
               width: "fit-content",
               height: "30px",
               border: "1px solid #ff469e",
+              margin: "0 auto",
             }}
             text="Cập nhật"
             styleText={{
@@ -186,7 +276,7 @@ function Profile() {
               fontWeight: 700,
             }}
           />
-        </WrapperContentProfile>{" "}
+        </WrapperContentProfile>
       </LoadingComponent>
     </div>
   );

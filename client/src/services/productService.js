@@ -41,7 +41,6 @@ export const getDetailProduct = async (id) => {
   const res = await axios.get(
     `${process.env.REACT_APP_API_KEY}/product/detail/${id}`
   );
-  console.log("res.data", res.data);
   return res.data;
 };
 
@@ -69,6 +68,13 @@ export const deleteProduct = async (id) => {
         token: `Bearer ${accessToken}`, // Thêm token vào header
       },
     }
+  );
+  return res.data;
+};
+
+export const getAllCateProduct = async () => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_KEY}/product/all-cate`
   );
   return res.data;
 };

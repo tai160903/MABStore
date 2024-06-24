@@ -61,6 +61,7 @@ function SigninPage() {
       password,
     });
   };
+
   return (
     <div
       style={{
@@ -134,7 +135,7 @@ function SigninPage() {
           <WrapperTextLight>Quên mật khẩu?</WrapperTextLight>
         </p>
         <p style={{ fontSize: "15px" }}>
-          Chưa có tài khoản?{" "}
+          Chưa có tài khoản?
           <WrapperTextLight onClick={handleNavigateSignup}>
             Tạo tài khoản
           </WrapperTextLight>

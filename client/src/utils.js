@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 export const isJsonString = (data) => {
   try {
     JSON.parse(data);
@@ -23,3 +24,28 @@ export function getItem(label, key, icon, children, type) {
     type,
   };
 }
+
+export const renderOptions = (arr) => {
+  let results = [];
+  if (arr) {
+    results = arr?.map((opt) => {
+      return { value: opt, label: opt };
+    });
+  }
+  results.push({
+    label: "Thêm category",
+    value: "add_cate",
+  });
+  return results;
+};
+
+export const convertPrice = (price) => {
+  try {
+    {
+      const result = price?.toLocaleString().replaceAll(",", ".");
+      return `${result} VND`;
+    }
+  } catch (error) {
+    return null;
+  }
+};

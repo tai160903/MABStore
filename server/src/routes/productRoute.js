@@ -12,5 +12,5 @@ router.delete(
   authMidleware.admin,
   productController.deleteProduct
 );
-
+router.get("/all-cate", productController.getAllCate);
 module.exports = router;

@@ -21,11 +21,14 @@ import {
   removeAllOrderProduct,
   removeOrderProduct,
 } from "../../redux/slides/orderSlide";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { convertPrice } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 const OrderPage = () => {
   const order = useSelector((state) => state.order);
   const [listChecked, setListChecked] = useState([]);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const onChange = (e) => {
     console.log(`checked = ${e.target.value}`);
@@ -54,7 +57,6 @@ const OrderPage = () => {
   };
 
   const handleChangeCheckAll = (e) => {
-    console.log("e.target.value", e.target.checked);
     if (e.target.checked) {
       const newListChecked = [];
       order?.orderItems?.forEach((item) => {
@@ -71,6 +73,44 @@ const OrderPage = () => {
       dispatch(removeAllOrderProduct({ listChecked }));
     }
   };
+
+  const priceMemo = useMemo(() => {
+    const result = order?.orderItems?.reduce((total, cur) => {
+      return total + cur.price * cur.amount;
+    }, 0);
+    return result;
+  }, [order]);
+
+  const discountMemo = useMemo(() => {
+    const result = order?.orderItems?.reduce((total, cur) => {
+      // return total + (cur.discount / 100) * Number(priceMemo);
+      return total + (cur.discount / 100) * cur.price * cur.amount;
+    }, 0);
+    if (result) {
+      return result;
+    }
+    return 0;
+  }, [order]);
+
+  const pointMemo = useMemo(() => {
+    const result = order?.orderItems?.reduce((total, cur) => {
+      return Math.floor((priceMemo - priceMemo * discountMemo) / 100);
+    }, 0);
+    if (result) {
+      return result;
+    }
+    return 0;
+  }, [priceMemo]);
+
+  const diliveryMemo = useMemo(() => {
+    if (priceMemo > 200000) {
+      return 15000;
+    } else return 20000;
+  }, [priceMemo]);
+
+  const totalMemo = useMemo(() => {
+    return Number(priceMemo) + Number(diliveryMemo) - Number(discountMemo);
+  }, [priceMemo, diliveryMemo, discountMemo]);
 
   return (
     <div style={{ background: "#f5f5fa", width: "100%", height: "100vh" }}>
@@ -105,6 +145,7 @@ const OrderPage = () => {
             </WrapperStyleHeader>
             <WrapperListOrder>
               {order?.orderItems?.map((order) => {
+                console.log("checkOrder", order);
                 return (
                   <WrapperItemOrder>
                     <div
@@ -149,7 +190,7 @@ const OrderPage = () => {
                     >
                       <span>
                         <span style={{ fontSize: "13px", color: "#242424" }}>
-                          {order?.price}
+                          {convertPrice(order?.price)}
                         </span>
                       </span>
                       <WrapperCountOrder>
@@ -195,7 +236,7 @@ const OrderPage = () => {
                           fontWeight: 500,
                         }}
                       >
-                        {order?.price * order?.amount}
+                        {convertPrice(order?.price * order?.amount)}
                       </span>
                       <DeleteOutlined
                         style={{ cursor: "pointer" }}
@@ -225,7 +266,7 @@ const OrderPage = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    0
+                    {convertPrice(priceMemo)}
                   </span>
                 </div>
                 <div
@@ -243,7 +284,7 @@ const OrderPage = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    0
+                    {convertPrice(discountMemo)}
                   </span>
                 </div>
                 <div
@@ -253,7 +294,7 @@ const OrderPage = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <span>Thuế</span>
+                  <span>Điểm</span>
                   <span
                     style={{
                       color: "#000",
@@ -261,7 +302,7 @@ const OrderPage = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    0
+                    {`+ ${pointMemo}`}
                   </span>
                 </div>
                 <div
@@ -279,7 +320,7 @@ const OrderPage = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    0
+                    {convertPrice(diliveryMemo)}
                   </span>
                 </div>
               </WrapperInfo>
@@ -299,7 +340,7 @@ const OrderPage = () => {
                       fontSize: "24px",
                     }}
                   >
-                    2013
+                    {convertPrice(totalMemo)}
                   </span>
                   <span style={{ color: "#000", fontSize: "14px" }}>
                     Đã bao gồm VAT nếu có
@@ -318,6 +359,9 @@ const OrderPage = () => {
               }}
               text={"Mua hàng"}
               styleText={{ color: "#fff" }}
+              onClick={() => {
+                navigate("*");
+              }}
             ></ButtonComponent>
           </WrapperRight>
         </div>

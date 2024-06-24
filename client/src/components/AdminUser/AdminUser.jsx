@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Form, Space } from "antd";
 import { WrapperHeader, WrapperUploadFile } from "./style";
 import TableComponent from "../TableComponent/TableComponent";

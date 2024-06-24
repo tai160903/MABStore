@@ -12,6 +12,7 @@ const productService = {
         brand,
         price,
         description,
+        discount,
       } = newProduct;
       try {
         const checkProduct = await productModel.findOne({
@@ -33,6 +34,7 @@ const productService = {
           brand,
           price,
           description,
+          discount,
         });
         if (createProduct) {
           resolve({
@@ -124,6 +126,7 @@ const productService = {
     return new Promise(async (resolve, reject) => {
       try {
         const totalProduct = await productModel.countDocuments();
+        let allProduct = [];
         if (filter) {
           const label = filter[1];
           const allProductFilter = await productModel
@@ -156,10 +159,14 @@ const productService = {
             totalPage: Math.ceil(totalProduct / limit),
           });
         }
-        const allProduct = await productModel
-          .find()
-          .limit(limit)
-          .skip(page * limit);
+        if (!limit) {
+          allProduct = await productModel.find();
+        } else {
+          allProduct = await productModel
+            .find()
+            .limit(limit)
+            .skip(page * limit);
+        }
         resolve({
           status: "OK",
           message: "SUCCESS",
@@ -170,6 +177,21 @@ const productService = {
         });
       } catch (error) {
         reject(error);
+      }
+    });
+  },
+
+  getAllCate: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const allCate = await productModel.distinct("category");
+        resolve({
+          status: "OK",
+          message: "Success",
+          data: allCate,
+        });
+      } catch (e) {
+        reject(e);
       }
     });
   },

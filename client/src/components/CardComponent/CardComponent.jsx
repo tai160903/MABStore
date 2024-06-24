@@ -9,6 +9,7 @@ import {
 } from "./style";
 import { StarFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { convertPrice } from "../../utils";
 
 function CardComponent(props) {
   const { image, name, price, rating, selled, discount, id } = props;
@@ -21,10 +22,10 @@ function CardComponent(props) {
       hoverable
       styles={{
         body: { padding: "10px" },
-        header: { width: "200px", height: "300px" },
+        header: { width: "300px", height: "300px" },
       }}
       style={{ width: 240 }}
-      cover={<img style={{ height: "300px" }} alt="example" src={image} />}
+      cover={<img style={{ height: "300px" }} alt="image" src={image} />}
       onClick={() => handleDetailsProduct(id)}
     >
       <StyleNameProduct>{name}</StyleNameProduct>
@@ -36,7 +37,7 @@ function CardComponent(props) {
         <WrapperStyleTextSell>| Da ban {selled || 1000} +</WrapperStyleTextSell>
       </WrapperReportText>
       <WapperPriceText>
-        <span>{price?.toLocaleString()}</span>
+        <span>{convertPrice(price)}</span>
         <WrapperDiscountText>- {discount || 5} %</WrapperDiscountText>
       </WapperPriceText>
     </Card>

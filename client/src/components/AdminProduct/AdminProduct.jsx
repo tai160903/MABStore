@@ -1,9 +1,9 @@
-import { Button, Form, Space } from "antd";
+import { Button, Form, Select, Space } from "antd";
 import TableComponent from "../TableComponent/TableComponent";
 import { WrapperHeader, WrapperUploadFile } from "./style";
 import React, { useEffect, useRef, useState } from "react";
 import InputComponent from "../InputComponent/InputComponent";
-import { getBase64 } from "../../utils";
+import { getBase64, renderOptions } from "../../utils";
 import * as productService from "../../services/productService";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import LoadingComponent from "../LoadingComponent/LoadingComponent";
@@ -19,6 +19,7 @@ function AdminProduct() {
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const [isPendingUpdate, setIsPendingUpdate] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+  const [cateSelect, setCateSelect] = useState("");
   const searchInput = useRef(null);
   const [stateProduct, setStateProduct] = useState({
     name: "",
@@ -30,8 +31,9 @@ function AdminProduct() {
     brand: "",
     price: "",
     description: "",
+    newCate: "",
+    discount: "",
   });
-
   const [stateProductDetails, setStateProductDetails] = useState({
     name: "",
     image: "",
@@ -42,9 +44,11 @@ function AdminProduct() {
     brand: "",
     price: "",
     description: "",
+    discount: "",
   });
 
   const [form] = Form.useForm();
+  const [formUpdate] = Form.useForm();
 
   const mutation = useMutationHooks((data) => {
     const {
@@ -57,6 +61,7 @@ function AdminProduct() {
       brand,
       price,
       description,
+      discount,
     } = data;
     const res = productService.createProduct({
       name,
@@ -68,6 +73,7 @@ function AdminProduct() {
       brand,
       price,
       description,
+      discount,
     });
     return res;
   });
@@ -88,50 +94,50 @@ function AdminProduct() {
     const res = await productService.getAllProduct();
     return res;
   };
-  console.log("mutationUpdate", mutationUpdate);
   const { data, isPending, isSuccess, isError } = mutation;
+
   const {
     data: dataUpdated,
     isPending: isPendingUpdated,
     isSuccess: isSuccessUpdated,
     isError: isErrorUpdated,
   } = mutationUpdate;
+
   const {
     data: dataDeleted,
     isPending: isPendingDeleted,
     isSuccess: isSuccessDeleted,
     isError: isErrorDeleted,
   } = mutationDelete;
-  const {
-    isPending: isPendingProduct,
-    data: products,
-    refetch,
-  } = useQuery({
+
+  const queryProduct = useQuery({
     queryKey: ["products"],
     queryFn: getAllProduct,
   });
+  const { isPending: isPendingProduct, data: products, refetch } = queryProduct;
 
   const fetchGetDetailsProduct = async (rowSelected) => {
     const res = await productService.getDetailProduct(rowSelected);
     if (res?.data) {
       setStateProductDetails({
-        name: res?.data.name,
-        image: res?.data.image,
-        category: res?.data.category,
-        quantity: res?.data.quantity,
-        rating: res?.data.rating,
-        weight: res?.data.weight,
-        brand: res?.data.brand,
-        price: res?.data.price,
-        description: res?.data.description,
+        name: res?.data?.name,
+        image: res?.data?.image,
+        category: res?.data?.category,
+        quantity: res?.data?.quantity,
+        rating: res?.data?.rating,
+        weight: res?.data?.weight,
+        brand: res?.data?.brand,
+        price: res?.data?.price,
+        description: res?.data?.description,
+        discount: res?.data?.discount,
       });
     }
     setIsPendingUpdate(false);
   };
 
   useEffect(() => {
-    form.setFieldsValue(stateProductDetails);
-  }, [form, stateProductDetails]);
+    formUpdate.setFieldsValue(stateProductDetails);
+  }, [formUpdate, stateProductDetails]);
 
   useEffect(() => {
     if (rowSelected) {
@@ -331,8 +337,23 @@ function AdminProduct() {
     });
   };
 
-  const onFinish = () => {
-    mutation.mutate(stateProduct);
+  const onCreateProduct = () => {
+    const params = {
+      name: stateProduct.name,
+      image: stateProduct.image,
+      category:
+        stateProduct.category === "add_cate"
+          ? stateProduct.newCate
+          : stateProduct.category,
+      quantity: stateProduct.quantity,
+      rating: stateProduct.rating,
+      weight: stateProduct.weight,
+      brand: stateProduct.brand,
+      price: stateProduct.price,
+      description: stateProduct.description,
+      discount: stateProduct.discount,
+    };
+    mutation.mutate(params);
   };
 
   const handleOnChange = (e) => {
@@ -353,6 +374,16 @@ function AdminProduct() {
     setIsModalOpenDelete(false);
   };
 
+  const fetchAllCateProduct = async () => {
+    const res = await productService.getAllCateProduct();
+    return res;
+  };
+
+  const cateProduct = useQuery({
+    queryKey: ["cate-product"],
+    queryFn: fetchAllCateProduct,
+  });
+
   const handleDeleteProduct = () => {
     mutationDelete.mutate({ id: rowSelected });
     setIsModalOpenDelete(false);
@@ -360,6 +391,7 @@ function AdminProduct() {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    form.resetFields();
     setStateProduct({
       name: "",
       image: "",
@@ -370,12 +402,13 @@ function AdminProduct() {
       brand: "",
       price: "",
       description: "",
+      discount: "",
     });
-    form.resetFields();
   };
 
   const handleCloseDrawer = () => {
     setIsOpenDrawer(false);
+    formUpdate.resetFields();
     setStateProductDetails({
       name: "",
       image: "",
@@ -386,8 +419,8 @@ function AdminProduct() {
       brand: "",
       price: "",
       description: "",
+      discount: "",
     });
-    form.resetFields();
   };
 
   useEffect(() => {
@@ -422,6 +455,13 @@ function AdminProduct() {
 
   const onUpdateProduct = () => {
     mutationUpdate.mutate({ id: rowSelected, ...stateProductDetails });
+  };
+
+  const handleChangeSelect = (value) => {
+    setStateProduct({
+      ...stateProduct,
+      category: value,
+    });
   };
 
   return (
@@ -473,7 +513,7 @@ function AdminProduct() {
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
             style={{ maxWidth: 600, marginTop: "20px" }}
-            onFinish={onFinish}
+            onFinish={onCreateProduct}
             autoComplete="on"
           >
             <Form.Item
@@ -494,12 +534,28 @@ function AdminProduct() {
                 { required: true, message: "Please input your category!" },
               ]}
             >
-              <InputComponent
-                value={stateProduct.category}
-                onChange={handleOnChange}
+              <Select
                 name="category"
+                value={stateProduct.category}
+                onChange={handleChangeSelect}
+                options={renderOptions(cateProduct?.data?.data)}
               />
             </Form.Item>
+            {stateProduct.category === "add_cate" && (
+              <Form.Item
+                label="New Category "
+                name="newCate"
+                rules={[
+                  { required: true, message: "Please input your category!" },
+                ]}
+              >
+                <InputComponent
+                  value={stateProduct.newCate}
+                  onChange={handleOnChange}
+                  name="newCate"
+                />
+              </Form.Item>
+            )}
             <Form.Item
               label="Quantity"
               name="quantity"
@@ -571,6 +627,22 @@ function AdminProduct() {
               />
             </Form.Item>
             <Form.Item
+              label="Discount"
+              name="discount"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your discount of product!",
+                },
+              ]}
+            >
+              <InputComponent
+                value={stateProduct.discount}
+                onChange={handleOnChange}
+                name="discount"
+              />
+            </Form.Item>
+            <Form.Item
               label="Image"
               name="image"
               rules={[{ required: true, message: "Please input your image!" }]}
@@ -610,7 +682,7 @@ function AdminProduct() {
       >
         <LoadingComponent isPending={isPendingUpdate || isPendingUpdated}>
           <Form
-            form={form}
+            form={formUpdate}
             name="basic"
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
@@ -710,6 +782,22 @@ function AdminProduct() {
                 value={stateProductDetails.description}
                 onChange={handleOnChangeDetails}
                 name="description"
+              />
+            </Form.Item>
+            <Form.Item
+              label="Discount"
+              name="discount"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your discount of product!",
+                },
+              ]}
+            >
+              <InputComponent
+                value={stateProductDetails.discount}
+                onChange={handleOnChangeDetails}
+                name="discount"
               />
             </Form.Item>
             <Form.Item

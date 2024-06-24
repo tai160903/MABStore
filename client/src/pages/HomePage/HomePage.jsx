@@ -12,7 +12,7 @@ import CardComponent from "../../components/CardComponent/CardComponent";
 import * as productService from "../../services/productService";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 import { useDebounce } from "../../hooks/useDebounce";
 
@@ -21,7 +21,7 @@ function HomePage() {
   const [limit, setLimit] = useState(10);
   const searchProduct = useSelector((state) => state.product?.search);
   const searchDebounce = useDebounce(searchProduct, 500);
-  const arr = ["TV", "Tủ lạnh", "Laptop", "Sữa bột cao cấp"];
+  const [cateProducts, setCateProducts] = useState([]);
 
   const fetchAllProduct = async (context) => {
     const limit = context?.queryKey && context?.queryKey[1];
@@ -43,10 +43,21 @@ function HomePage() {
     placeholderData: (previousData, previousQuery) => previousData,
   });
 
+  const fetchAllCateProduct = async () => {
+    const res = await productService.getAllCateProduct();
+    if (res?.status === "OK") {
+      setCateProducts(res?.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllCateProduct();
+  }, []);
+
   return (
     <LoadingComponent isPending={isPending || pending}>
       <WrapperTypeProduct style={{ padding: "0 120px" }}>
-        {arr.map((item) => {
+        {cateProducts.map((item) => {
           return <TypeProduct name={item} key={item} />;
         })}
       </WrapperTypeProduct>

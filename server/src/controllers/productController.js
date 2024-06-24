@@ -13,6 +13,7 @@ const productController = {
         brand,
         price,
         description,
+        discount,
       } = req.body;
       if (
         !name ||
@@ -105,7 +106,7 @@ const productController = {
     try {
       const { limit, page, sort, filter } = req.query;
       const response = await productService.getAllProduct(
-        Number(limit) || 10,
+        Number(limit) || null,
         Number(page) || 0,
         sort,
         filter
@@ -113,6 +114,17 @@ const productController = {
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({ message: err });
+    }
+  },
+
+  getAllCate: async (req, res) => {
+    try {
+      const response = await productService.getAllCate();
+      return res.status(200).json(response);
+    } catch (e) {
+      return res.status(404).json({
+        message: e,
+      });
     }
   },
 };

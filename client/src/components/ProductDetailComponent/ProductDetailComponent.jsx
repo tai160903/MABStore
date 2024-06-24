@@ -18,6 +18,7 @@ import LoadingComponent from "../LoadingComponent/LoadingComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addOrderProduct } from "../../redux/slides/orderSlide";
+import { convertPrice } from "../../utils";
 
 function ProductDetailComponent({ idProduct }) {
   const navigate = useNavigate();
@@ -51,6 +52,8 @@ function ProductDetailComponent({ idProduct }) {
     queryFn: fetchGetDetailsProduct,
     enabled: !!idProduct,
   });
+
+  console.log("productDetails", productDetails);
 
   const handleAddOrderProduct = () => {
     if (!user?._id) {
@@ -149,7 +152,7 @@ function ProductDetailComponent({ idProduct }) {
           </div>
           <WrapperPriceProduct>
             <WrapperPriceTextProduct>
-              {productDetails?.price.toLocaleString()}
+              {convertPrice(productDetails?.price)}
             </WrapperPriceTextProduct>
           </WrapperPriceProduct>
           <WrapperAddressProduct>
