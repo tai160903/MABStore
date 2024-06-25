@@ -14,8 +14,8 @@ export const WrapperStyleHeader = styled.div`
   }
 `;
 
-export const WrapperLeft = styled.div`
-  width: 910px;
+export const WrapperContainer = styled.div`
+  width: 100%;
 `;
 
 export const WrapperListOrder = styled.div``;
@@ -35,13 +35,7 @@ export const WrapperPriceDiscount = styled.span`
   margin-left: 4px;
 `;
 
-export const WrapperCountOrder = styled.div`
-  display: flex;
-  align-items: center;
-  width: 84px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
+export const WrapperCountOrder = styled.div``;
 
 export const WrapperRight = styled.div`
   width: 320px;
@@ -87,5 +81,22 @@ export const WrapperRadio = styled(Radio.Group)`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  justify-content: center;
+`;
+
+export const WrapperValue = styled.div`
+  background: rgb(240, 248, 255);
+  border: 1px solid rgb(194, 225, 255);
+  padding: 16px;
+  margin-top: 10px;
+`;
+
+export const WrapperItemsOrderInfo = styled.div`
+  padding: 17px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  background: #fff;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 14px;
   justify-content: center;
 `;

@@ -229,7 +229,6 @@ const OrderPage = () => {
             </WrapperStyleHeader>
             <WrapperListOrder>
               {order?.orderItems?.map((order) => {
-                console.log("checkOrder", order);
                 return (
                   <WrapperItemOrder>
                     <div

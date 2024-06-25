@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable jsx-a11y/alt-text */
 import { Form, Radio } from "antd";
 import {
@@ -20,6 +21,8 @@ import * as userService from "../../services/userService";
 import * as orderService from "../../services/orderService";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 import { updateUser } from "../../redux/slides/userSlide";
+import { useNavigate } from "react-router-dom";
+import { removeAllOrderProduct } from "../../redux/slides/orderSlide";
 
 const PaymentPage = () => {
   const order = useSelector((state) => state.order);
@@ -28,6 +31,7 @@ const PaymentPage = () => {
   const [listChecked, setListChecked] = useState([]);
   const [isOpenModalUpdateInfo, setIsOpenModalUpdateInfo] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const [stateUserDetails, setStateUserDetails] = useState({
@@ -144,12 +148,26 @@ const PaymentPage = () => {
 
   useEffect(() => {
     if (isSuccess && dataAdd?.status === "OK") {
+      const ordered = [];
+      order?.orderItemsSelected?.forEach((element) => {
+        ordered.push(element.product);
+      });
+      console.log("ordered", ordered);
+      dispatch(removeAllOrderProduct({ listChecked: ordered }));
       message.success("Đặt hàng thành công");
+      navigate("/orderSuccess", {
+        state: {
+          order: order?.orderItemsSelected,
+          payment,
+          totalMemo: totalMemo,
+        },
+      });
     } else if (isError) {
       message.error("Đặt hàng thất bại");
     }
-  }, [isSuccess, isError, dataAdd]);
+  }, [isSuccess, isError]);
 
+  console.log("order?.orderItemsSelected", order?.orderItemsSelected);
   const priceMemo = useMemo(() => {
     const result = order?.orderItemsSelected?.reduce((total, cur) => {
       return total + cur.price * cur.amount;
@@ -183,7 +201,7 @@ const PaymentPage = () => {
     <div style={{ background: "#f5f5fa", width: "100%", height: "100vh" }}>
       <LoadingComponent isPending={isPendingAddOrder}>
         <div style={{ height: "100%", padding: "0 120px", margin: "0 auto" }}>
-          <h2>Phương thức thanh toán</h2>
+          <h2>Thanh toán</h2>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <WrapperLeft>
               <WrapperInfo>
