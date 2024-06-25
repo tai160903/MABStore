@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const homeRoute = require("./src/routes/homeRoute");
 const userRoute = require("./src/routes/userRoute");
 const productRoute = require("./src/routes/productRoute");
+const orderRoute = require("./src/routes/orderRoute");
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 8085;
@@ -23,6 +24,7 @@ mongoose
 app.use("/", homeRoute);
 app.use("/user", userRoute);
 app.use("/product", productRoute);
+app.use("/order", orderRoute);
 app.listen(port, () => {
   console.log("Server started: http://localhost:8085/");
 });

@@ -30,6 +30,7 @@ import * as message from "../../components/MessageComponent/MessageCpmponent";
 import * as userService from "../../services/userService";
 import LoadingComponent from "../../components/LoadingComponent/LoadingComponent";
 import { updateUser } from "../../redux/slides/userSlide";
+import { useNavigate } from "react-router-dom";
 
 const OrderPage = () => {
   const order = useSelector((state) => state.order);
@@ -37,6 +38,7 @@ const OrderPage = () => {
   const [listChecked, setListChecked] = useState([]);
   const [isOpenModalUpdateInfo, setIsOpenModalUpdateInfo] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const [stateUserDetails, setStateUserDetails] = useState({
@@ -62,6 +64,8 @@ const OrderPage = () => {
       message.error("Vui lòng chọn sản phẩm");
     } else if (!user?.phone || !user.address || !user.fullName || !user.city) {
       setIsOpenModalUpdateInfo(true);
+    } else {
+      navigate("/payment");
     }
   };
 
@@ -86,6 +90,7 @@ const OrderPage = () => {
   });
 
   const { isPending, data } = mutationUpdate;
+
   const handleUpdateInfoUser = () => {
     const { fullName, phone, city, address } = stateUserDetails;
     if (fullName && phone && city && address) {
@@ -136,6 +141,10 @@ const OrderPage = () => {
     if (listChecked?.length) {
       dispatch(removeAllOrderProduct({ listChecked }));
     }
+  };
+
+  const handleChangeAddress = () => {
+    setIsOpenModalUpdateInfo(true);
   };
 
   useEffect(() => {
@@ -325,6 +334,20 @@ const OrderPage = () => {
           </WrapperLeft>
           <WrapperRight>
             <div style={{ width: "100%" }}>
+              <WrapperInfo>
+                <div style={{ fontSize: "15px" }}>
+                  <span>Địa chỉ: </span>
+                  <span
+                    style={{ fontWeight: "bold" }}
+                  >{`${user?.address} ${user?.city}`}</span>{" "}
+                  <span
+                    onClick={handleChangeAddress}
+                    style={{ color: "#0473ed", cursor: "pointer" }}
+                  >
+                    Thay đổi
+                  </span>
+                </div>
+              </WrapperInfo>
               <WrapperInfo>
                 <div
                   style={{
