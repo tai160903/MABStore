@@ -29,13 +29,11 @@ function AdminUser() {
     phone: "",
     address: "",
     avatar: "",
-    point: 0,
   });
 
   const [form] = Form.useForm();
 
   const mutationUpdate = useMutationHooks((data) => {
-    console.log("data", data);
     const { id, ...rests } = data;
     const res = userService.updateUser(id, { ...rests });
     return res;
@@ -49,7 +47,6 @@ function AdminUser() {
 
   const getAllUser = async () => {
     const res = await userService.getAllUser();
-    console.log("res", res);
     return res;
   };
   const {
@@ -84,7 +81,6 @@ function AdminUser() {
         phone: res?.data.phone,
         address: res?.data.address,
         avatar: res?.data.avatar,
-        point: res?.data.point,
       });
     }
     setIsPendingUpdate(false);
@@ -221,11 +217,6 @@ function AdminUser() {
       dataIndex: "address",
     },
     {
-      title: "Point",
-      dataIndex: "point",
-      sorter: (a, b) => a.point - b.point,
-    },
-    {
       title: "Role",
       dataIndex: "isAdmin",
       filters: [
@@ -300,7 +291,6 @@ function AdminUser() {
       phone: "",
       address: "",
       avatar: "",
-      point: 0,
     });
     form.resetFields();
   };
@@ -328,8 +318,6 @@ function AdminUser() {
   const onUpdateUser = () => {
     mutationUpdate.mutate({ id: rowSelected, ...stateUserDetails });
   };
-
-  console.log("stateUserDetails", stateUserDetails);
 
   return (
     <div>

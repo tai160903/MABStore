@@ -69,6 +69,7 @@ export const logoutUser = async () => {
 };
 
 export const updateUser = async (id, data) => {
+  console.log("id", id);
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
   const res = await axiosJWT.put(
     `${process.env.REACT_APP_API_KEY}/user/update/${id}`,

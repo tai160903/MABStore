@@ -26,7 +26,6 @@ function Profile() {
   const [address, setAddress] = useState("");
   const [avatar, setAvatar] = useState("");
   const [fullName, setFullName] = useState("");
-  const [point, setPoint] = useState("");
 
   const mutation = useMutationHooks((data) => {
     const { _id, accessToken, ...rests } = data;
@@ -41,7 +40,6 @@ function Profile() {
     setAddress(user?.address);
     setAvatar(user?.avatar);
     setFullName(user?.fullName);
-    setPoint(user?.point);
   }, [user]);
 
   useEffect(() => {
@@ -251,15 +249,7 @@ function Profile() {
               }}
             /> */}
           </WrapperInput>
-          <WrapperInput>
-            <WrapperLable htmlFor="point">Point</WrapperLable>
-            <InputForm
-              id="point"
-              style={{ width: "100%" }}
-              value={point}
-              disabled
-            />
-          </WrapperInput>
+
           <ButtonComponent
             onClick={handleUpdate}
             size={40}

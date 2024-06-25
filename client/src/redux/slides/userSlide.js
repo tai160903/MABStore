@@ -10,9 +10,9 @@ export const userSlide = createSlice({
     phone: "",
     address: "",
     avatar: "",
-    point: null,
     _id: "",
     isAdmin: false,
+    city: "",
   },
   reducers: {
     updateUser: (state, action) => {
@@ -20,13 +20,13 @@ export const userSlide = createSlice({
         username = "",
         email = "",
         accessToken = "",
-        point = "",
         avatar = "",
         address = "",
         phone = "",
         fullName = "",
         _id = "",
         isAdmin,
+        city = "",
       } = action.payload;
       state.username = username;
       state.email = email;
@@ -35,22 +35,22 @@ export const userSlide = createSlice({
       state.phone = phone;
       state.avatar = avatar;
       state._id = _id;
-      state.point = point;
       state.accessToken = accessToken;
       state.isAdmin = isAdmin;
+      state.city = city;
     },
 
     resetUser: (state) => {
       state.username = "";
       state.email = "";
       state.accessToken = "";
-      state.point = null;
       state._id = "";
       state.avatar = "";
       state.address = "";
       state.phone = "";
       state.fullName = "";
       state.isAdmin = false;
+      state.city = "";
     },
   },
 });

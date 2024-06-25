@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, required: false },
     address: { type: String },
     avatar: { type: String },
-    point: { type: Number, required: false, default: 0 },
+    city: { type: String },
   },
   {
     collection: "user",

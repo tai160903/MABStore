@@ -21,7 +21,7 @@ function ProductDetailPage() {
             style={{ cursor: "pointer", fontWeight: "bolder" }}
           >
             Trang chủ
-          </span>{" "}
+          </span>
           - Chi tiết sản phẩm
         </p>
         <ProductDetailComponent idProduct={id} />
