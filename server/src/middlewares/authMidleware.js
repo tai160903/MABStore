@@ -31,6 +31,7 @@ const authMidleware = {
 
   user: (req, res, next) => {
     const userId = req.params.id;
+    console.log("userId", userId);
     const token = req.headers.token?.split(" ")[1];
     jwt.verify(token, process.env.ACCESSTOKEN, function (err, user) {
       if (err) {
@@ -43,7 +44,7 @@ const authMidleware = {
         next();
       } else {
         return res.status(404).json({
-          message: "The authentication failed.",
+          message: "The authentication failed!!!.",
           status: "ERR",
         });
       }

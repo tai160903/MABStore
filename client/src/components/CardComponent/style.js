@@ -1,4 +1,10 @@
+import { Card } from "antd";
 import styled from "styled-components";
+
+export const WrapperCard = styled(Card)`
+  background: ${(props) => (props.disable ? "#ccc" : "#fff")};
+  cursor: ${(props) => (props.disable ? "not-allowed" : "pointer")};
+`;
 
 export const StyleNameProduct = styled.div`
   font-weight: 400;

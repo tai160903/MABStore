@@ -88,7 +88,7 @@ const productController = {
       if (!productId) {
         return res.json({
           status: "ERR",
-          message: "The userId is required",
+          message: "The productId is required",
         });
       }
       const response = await productService.detailProduct(productId);

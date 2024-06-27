@@ -43,7 +43,7 @@ const PaymentPage = () => {
 
   const mutationAddOrder = useMutationHooks((data) => {
     const { ...rests } = data;
-    const res = orderService.createOrder({ ...rests });
+    const res = orderService.createOrder({ ...rests }, user?._id);
     return res;
   });
 

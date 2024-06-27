@@ -10,7 +10,7 @@ import SignupPage from "../pages/SignupPage/SignupPage";
 import TypeProductPage from "../pages/TypeProductPage/TypeProductPage";
 import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import OrderSuccess from "../pages/OrderSucess/OrderSucess";
-
+import MyOrderPage from "../pages/MyOrderPage/MyOrderPage";
 const routes = [
   {
     path: "/",
@@ -20,6 +20,11 @@ const routes = [
   {
     path: "/order",
     page: OrderPage,
+    isShowHeader: true,
+  },
+  {
+    path: "/my_order",
+    page: MyOrderPage,
     isShowHeader: true,
   },
   {

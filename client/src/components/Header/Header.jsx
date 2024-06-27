@@ -26,6 +26,7 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
   const [search, setSearch] = useState("");
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
   const order = useSelector((state) => state.order);
   const handleNavigateLogin = () => {
     navigate("/sign-in");
@@ -45,7 +46,7 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
     <div>
       <WrapperContentPopup
         onClick={() => {
-          navigate("/profile-user");
+          handleClickNavigate("profile");
         }}
       >
         Thông tin người dùng
@@ -53,17 +54,41 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
       {user?.isAdmin && (
         <WrapperContentPopup
           onClick={() => {
-            navigate("/system/admin");
+            handleClickNavigate("admin");
           }}
         >
           Quản lý hệ thống
         </WrapperContentPopup>
       )}
-      <WrapperContentPopup onClick={handleLogout}>
+      <WrapperContentPopup
+        onClick={() => {
+          handleClickNavigate("my_order");
+        }}
+      >
+        Đơn hàng của tôi
+      </WrapperContentPopup>{" "}
+      <WrapperContentPopup
+        onClick={() => {
+          handleClickNavigate();
+        }}
+      >
         Đăng Xuất
       </WrapperContentPopup>
     </div>
   );
+
+  const handleClickNavigate = (type) => {
+    if (type === "profile") {
+      navigate("/profile-user");
+    } else if (type === "admin") {
+      navigate("/system/admin");
+    } else if (type === "my_order") {
+      navigate("/my_order");
+    } else {
+      handleLogout();
+    }
+    setIsOpenPopup(false);
+  };
 
   const onSearch = (e) => {
     setSearch(e.target.value);
@@ -82,6 +107,7 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
           <WrapperText
             onClick={() => {
               navigate("/");
+              setIsOpenPopup(false);
             }}
           >
             MABStore
@@ -123,8 +149,11 @@ function Header({ isHiddenSearch = false, isHiddenCart = false }) {
             )}
             {user?.accessToken ? (
               <>
-                <Popover content={content} trigger="click">
-                  <div style={{ cursor: "pointer" }}>
+                <Popover content={content} trigger="click" open={isOpenPopup}>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsOpenPopup((prev) => !prev)}
+                  >
                     {username.length < 8 ? username : "User"}
                   </div>
                 </Popover>
